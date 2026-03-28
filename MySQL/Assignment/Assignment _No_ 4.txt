@@ -1,0 +1,314 @@
+                         MySQL Assignment – 4
+
+Q1) Write an SQL query to display employee first_name and last_name with suitable column
+aliases.
+
+
+mysql> SELECT first_name AS Name ,last_name AS surname FROM EMPLOYEES;
++-----------+-----------+
+| Name      | surname   |
++-----------+-----------+
+| Steven    | King      |
+| Neena     | Kochhar   |
+| Lex       | De Haan   |
+| Alexander | Hunold    |
+| Bruce     | Ernst     |
+| David     | Austin    |
+| Valli     | Pataballa |
+| Nancy     | Greenberg |
+| Daniel    | Faviet    |
+| SAHIL     | BARGE     |
++-----------+-----------+
+10 rows in set (0.00 sec)
+
+
+
+Q2) Write an SQL query to display all different department IDs available in the EMPLOYEES
+table.
+
+mysql> SELECT department_id FROM EMPLOYEES;
++---------------+
+| department_id |
++---------------+
+|            10 |
+|            10 |
+|            10 |
+|            50 |
+|            60 |
+|            60 |
+|            60 |
+|            60 |
+|            80 |
+|            80 |
++---------------+
+10 rows in set (0.01 sec)
+
+
+Q3) Write an SQL query to display all employee details sorted by first_name in descending
+order.
+
+mysql> SELECT * FROM EMPLOYEES ORDER BY first_name DESC;
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+| employee_id | first_name | last_name | email                 | phone_number | hire_date  | job_id | salary   | commission | manager_id | department_id |
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+|         106 | Valli      | Pataballa | not available         | NULL         | NULL       |  34800 |  7280.00 |       0.10 |        103 |            60 |
+|         100 | Steven     | King      | not available         | NULL         | NULL       |  24000 | 26400.00 |       0.10 |        200 |            10 |
+|         110 | SAHIL      | BARGE     | SAHILBARGEE@GMAIL.COM | 8767941593   | 2026-03-15 |    100 | 55000.00 |       0.05 |        200 |            50 |
+|         101 | Neena      | Kochhar   | not available         | NULL         | NULL       | 217000 | 18700.00 |       0.10 |        200 |            10 |
+|         108 | Nancy      | Greenberg | not available         | NULL         | NULL       | 412000 | 13200.00 |       0.10 |        300 |            80 |
+|         102 | Lex        | De Haan   | not available         | NULL         | NULL       | 217000 | 18700.00 |       0.10 |        200 |            10 |
+|         105 | David      | Austin    | not available         | NULL         | NULL       |  34800 |  7280.00 |       0.10 |        103 |            60 |
+|         109 | Daniel     | Faviet    | not available         | NULL         | NULL       |  49000 |  9900.00 |       0.10 |        300 |            80 |
+|         104 | Bruce      | Ernst     | not available         | NULL         | NULL       |  36000 |  8600.00 |       0.10 |        103 |            60 |
+|         103 | Alexander  | Hunold    | not available         | NULL         | NULL       |  39000 | 11900.00 |       0.10 |        103 |            60 |
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+10 rows in set (0.01 sec)
+
+
+
+
+
+Q4) Write an SQL query to display first_name, last_name, salary, and PF for all employees.
+(PF is calculated as 15% of salary.)
+
+mysql> SELECT first_name ,last_name,salary,salary*0.15 AS PF FROM EMPLOYEES;
++------------+-----------+----------+-----------+
+| first_name | last_name | salary   | PF        |
++------------+-----------+----------+-----------+
+| Steven     | King      | 26400.00 | 3960.0000 |
+| Neena      | Kochhar   | 18700.00 | 2805.0000 |
+| Lex        | De Haan   | 18700.00 | 2805.0000 |
+| Alexander  | Hunold    | 11900.00 | 1785.0000 |
+| Bruce      | Ernst     |  8600.00 | 1290.0000 |
+| David      | Austin    |  7280.00 | 1092.0000 |
+| Valli      | Pataballa |  7280.00 | 1092.0000 |
+| Nancy      | Greenberg | 13200.00 | 1980.0000 |
+| Daniel     | Faviet    |  9900.00 | 1485.0000 |
+| SAHIL      | BARGE     | 55000.00 | 8250.0000 |
++------------+-----------+----------+-----------+
+10 rows in set (0.01 sec)
+
+Q5) Write an SQL query to display employee_id, employee names, and salary sorted in
+increasing order of salary.
+
+mysql> SELECT employee_id,first_name,last_name,salary
+    -> FROM EMPLOYEES
+    -> ORDER BY salary ASC;
++-------------+------------+-----------+----------+
+| employee_id | first_name | last_name | salary   |
++-------------+------------+-----------+----------+
+|         105 | David      | Austin    |  7280.00 |
+|         106 | Valli      | Pataballa |  7280.00 |
+|         104 | Bruce      | Ernst     |  8600.00 |
+|         109 | Daniel     | Faviet    |  9900.00 |
+|         103 | Alexander  | Hunold    | 11900.00 |
+|         108 | Nancy      | Greenberg | 13200.00 |
+|         101 | Neena      | Kochhar   | 18700.00 |
+|         102 | Lex        | De Haan   | 18700.00 |
+|         100 | Steven     | King      | 26400.00 |
+|         110 | SAHIL      | BARGE     | 55000.00 |
++-------------+------------+-----------+----------+
+10 rows in set (0.00 sec)
+
+
+Q6) Write an SQL query to display the total salary payable to all employees.
+mysql> SELECT SUM(SALARY) FROM EMPLOYEES;
++-------------+
+| SUM(SALARY) |
++-------------+
+|   176960.00 |
++-------------+
+1 row in set (0.01 sec)
+
+
+
+Q7) Write an SQL query to display the highest salary and the lowest salary from the
+EMPLOYEES table.
+
+mysql> SELECT MAX(SALARY) AS highest_salary,MIN(SALARY) AS lowest_salary FROM EMPLOYEES;
++----------------+---------------+
+| highest_salary | lowest_salary |
++----------------+---------------+
+|       55000.00 |       7280.00 |
++----------------+---------------+
+1 row in set (0.00 sec)
+
+Q8) Write an SQL query to display the average salary and the total number of employees.
+
+mysql> SELECT AVG(SALARY) AS Avarage_salary , COUNT(employee_id) AS total_emp FROM EMPLOYEES;
++----------------+-----------+
+| Avarage_salary | total_emp |
++----------------+-----------+
+|   17696.000000 |        10 |
++----------------+-----------+
+1 row in set (0.00 sec)
+
+
+
+Q9) Write an SQL query to display the total number of employees working in the company.
+
+mysql> SELECT COUNT(employee_id) AS total_emp FROM EMPLOYEES;
++-----------+
+| total_emp |
++-----------+
+|        10 |
++-----------+
+1 row in set (0.00 sec)
+
+Q10) Write an SQL query to display the number of different job roles available in the
+EMPLOYEES table.
+
+mysql> SELECT COUNT(DISTINCT job_id) AS TOTAL_JOB_ROLE FROM EMPLOYEES;
++----------------+
+| TOTAL_JOB_ROLE |
++----------------+
+|              8 |
++----------------+
+1 row in set (0.01 sec)
+
+
+Q11) Write an SQL query to display the first 10 employee records from the EMPLOYEES table.
+
+mysql> SELECT * FROM EMPLOYEES LIMIT 10;
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+| employee_id | first_name | last_name | email                 | phone_number | hire_date  | job_id | salary   | commission | manager_id | department_id |
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+|         100 | Steven     | King      | not available         | NULL         | NULL       |  24000 | 26400.00 |       0.10 |        200 |            10 |
+|         101 | Neena      | Kochhar   | not available         | NULL         | NULL       | 217000 | 18700.00 |       0.10 |        200 |            10 |
+|         102 | Lex        | De Haan   | not available         | NULL         | NULL       | 217000 | 18700.00 |       0.10 |        200 |            10 |
+|         103 | Alexander  | Hunold    | not available         | NULL         | NULL       |  39000 | 11900.00 |       0.10 |        103 |            60 |
+|         104 | Bruce      | Ernst     | not available         | NULL         | NULL       |  36000 |  8600.00 |       0.10 |        103 |            60 |
+|         105 | David      | Austin    | not available         | NULL         | NULL       |  34800 |  7280.00 |       0.10 |        103 |            60 |
+|         106 | Valli      | Pataballa | not available         | NULL         | NULL       |  34800 |  7280.00 |       0.10 |        103 |            60 |
+|         108 | Nancy      | Greenberg | not available         | NULL         | NULL       | 412000 | 13200.00 |       0.10 |        300 |            80 |
+|         109 | Daniel     | Faviet    | not available         | NULL         | NULL       |  49000 |  9900.00 |       0.10 |        300 |            80 |
+|         110 | SAHIL      | BARGE     | SAHILBARGEE@GMAIL.COM | 8767941593   | 2026-03-15 |    100 | 55000.00 |       0.05 |        200 |            50 |
++-------------+------------+-----------+-----------------------+--------------+------------+--------+----------+------------+------------+---------------+
+10 rows in set (0.00 sec)
+
+Q12) Write an SQL query to display employee names and salary for employees whose salary is
+less than 10000 or greater than 15000.
+
+mysql> SELECT first_name,salary FROM EMPLOYEES
+    -> WHERE SALARY <10000 OR SALARY >15000;
++------------+----------+
+| first_name | salary   |
++------------+----------+
+| Steven     | 26400.00 |
+| Neena      | 18700.00 |
+| Lex        | 18700.00 |
+| Bruce      |  8600.00 |
+| David      |  7280.00 |
+| Valli      |  7280.00 |
+| Daniel     |  9900.00 |
+| SAHIL      | 55000.00 |
++------------+----------+
+
+Q13) Write an SQL query to display employee names and department_id for employees working
+in department 30 and department 100.
+Sort the result by department_id.
+
+mysql> SELECT first_name,department_id FROM EMPLOYEES
+    -> WHERE department_id IN(30,100)
+    -> ORDER BY department_id DESC;
+Empty set (0.01 sec)
+
+
+Q14) Write an SQL query to display employee names and salary for employees working in
+department 30 or 100,
+whose salary is outside the range 10000 to 15000.
+
+mysql> SELECT first_name,salary FROM EMPLOYEES
+    -> WHERE department_id IN(30,100) AND  SALARY NOT BETWEEN
+    -> 10000 AND 15000;
+Empty set (0.00 sec)
+
+Q15) Write an SQL query to display employee names and hire_date for employees who were
+hired in the year 1987.
+
+mysql> SELECT first_name ,hire_date FROM EMPLOYEES
+    -> WHERE YEAR(hire_date)=1987;
+Empty set (0.00 sec)
+
+
+Q16) Write an SQL query to display first_name of employees whose first_name contains both
+letters 'b' and 'c'.
+
+
+mysql> SELECT first_name FROM EMPLOYEES
+    -> WHERE first_name LIKE '%b%'AND
+    -> first_name LIKE '%c%' ;
++------------+
+| first_name |
++------------+
+| Bruce      |
++------------+
+1 row in set (0.00 sec)
+
+Q17) Write an SQL query to display last_name, job role, and salary for employees who work as
+Programmer or Shipping Clerk,
+and whose salary is not equal to 4500, 10000, or 15000.
+
+mysql> SELECT last_name, job_id, salary
+    -> FROM employees
+    -> WHERE job_id IN ('PROGRAMMER', 'SHIPPING CLERK')
+    -> AND salary NOT IN (4500, 10000, 15000);
+Empty set, 2 warnings (0.00 sec)
+
+
+Q18) Write an SQL query to display last_name of employees who’s last_name contains exactly 6
+characters.
+
+mysql> SELECT last_name FROM EMPLOYEES
+    -> WHERE last_name LIKE '______';
++-----------+
+| last_name |
++-----------+
+| Hunold    |
+| Austin    |
+| Faviet    |
++-----------+
+3 rows in set (0.00 sec)
+
+Q19) Write an SQL query to display last_name of employees having 'e' as the third character in
+their last_name.
+
+mysql> SELECT last_name FROM EMPLOYEES
+    -> WHERE last_name LIKE'__e%';
++-----------+
+| last_name |
++-----------+
+| Greenberg |
++-----------+
+1 row in set (0.00 sec)
+
+Q20) Write an SQL query to display all different job roles/designations available in the
+EMPLOYEES table.
+
+mysql> SELECT DISTINCT(job_id) FROM EMPLOYEES;
++--------+
+| job_id |
++--------+
+|  24000 |
+| 217000 |
+|  39000 |
+|  36000 |
+|  34800 |
+| 412000 |
+|  49000 |
+|    100 |
++--------+
+8 rows in set (0.00 sec)
+
+Q21) Write an SQL query to display employee details for employees who’s last_name is
+BLAKE, SCOTT, KING, or FORD.
+
+mysql> SELECT * FROM EMPLOYEES
+    -> WHERE last_name IN ('BLAKE','SCOTT','KING','FORD');
++-------------+------------+-----------+---------------+--------------+-----------+--------+----------+------------+------------+---------------+
+| employee_id | first_name | last_name | email         | phone_number | hire_date | job_id | salary   | commission | manager_id | department_id |
++-------------+------------+-----------+---------------+--------------+-----------+--------+----------+------------+------------+---------------+
+|         100 | Steven     | King      | not available | NULL         | NULL      |  24000 | 26400.00 |       0.10 |        200 |            10 |
++-------------+------------+-----------+---------------+--------------+-----------+--------+----------+------------+------------+---------------+
+1 row in set (0.01 sec)
+
