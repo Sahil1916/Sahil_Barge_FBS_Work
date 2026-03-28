@@ -1,0 +1,209 @@
+
+                                   ASSIGNMENT NO -3                                                                            
+TABLE STRUCTURES REFERENCE
+sql
+-- EMPLOYEES Table Structure
+DESC EMPLOYEES;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| employee_id   | int           | NO   | PRI | NULL    |       |
+| first_name    | varchar(50)   | YES  |     | NULL    |       |
+| last_name     | varchar(50)   | YES  |     | NULL    |       |
+| email         | varchar(100)  | YES  |     | NULL    |       |
+| phone_number  | varchar(20)   | YES  |     | NULL    |       |
+| hire_date     | date          | YES  |     | NULL    |       |
+| job_id        | int           | YES  |     | NULL    |       |
+| salary        | decimal(10,2) | YES  |     | NULL    |       |
+| commission    | decimal(10,2) | YES  |     | NULL    |       |
+| manager_id    | decimal(6,0)  | YES  |     | NULL    |       |
+| department_id | decimal(4,0)  | YES  | MUL | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+
+-- DEPARTMENTS Table Structure
+DESC DEPARTMENTS;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| department_id   | int          | NO   | PRI | NULL    |       |
+| department_name | varchar(30)  | NO   |     | NULL    |       |
+| manager_id      | decimal(6,0) | NO   | PRI | NULL    |       |
+| location_id     | decimal(4,0) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+
+-- JOBS Table Structure
+DESC JOBS;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| Job_Id     | int           | NO   | PRI | NULL    |       |
+| Job_title  | varchar(100)  | NO   |     | NULL    |       |
+| min_salary | decimal(10,2) | YES  |     | NULL    |       |
+| max_salary | decimal(10,2) | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+
+-- department_managers Table Structure
+DESC department_managers;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| department_id | decimal(4,0) | NO   | PRI | NULL    |       |
+| manager_id    | decimal(6,0) | NO   | PRI | NULL    |       |
+| manager_name  | varchar(50)  | NO   |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+PREREQUISITE: Insert Required Data into department_managers Table
+
+sql
+-- First, insert manager-department combinations to satisfy foreign key constraints
+INSERT INTO department_managers (department_id, manager_id, manager_name) VALUES
+(10, 200, 'Steven King'),
+(60, 103, 'Alexander Hunold'),
+(30, 114, 'Diana Lorentz'),
+(80, 145, 'Nancy Greenberg'),
+(50, 200, 'Steven King');  -- Added for Q10
+
+-- Verify the inserts
+SELECT * FROM department_managers;
+QUESTION 1: Insert employee records into the EMPLOYEES table
+sql
+INSERT INTO EMPLOYEES (employee_id, first_name, last_name, job_id, salary, manager_id, department_id) VALUES
+(100, 'Steven', 'King', 24000, 24000.00, 200, 10),
+(101, 'Neena', 'Kochhar', 217000, 17000.00, 200, 10),
+(102, 'Lex', 'De Haan', 217000, 17000.00, 200, 10),
+(103, 'Alexander', 'Hunold', 39000, 9000.00, 103, 60),
+(104, 'Bruce', 'Ernst', 36000, 6000.00, 103, 60),
+(105, 'David', 'Austin', 34800, 4800.00, 103, 60),
+(106, 'Valli', 'Pataballa', 34800, 4800.00, 103, 60),
+(107, 'Diana', 'Lorentz', 34200, 4200.00, 114, 30),
+(108, 'Nancy', 'Greenberg', 412000, 12000.00, 145, 80),
+(109, 'Daniel', 'Faviet', 49000, 9000.00, 145, 80);
+
+-- Verify the insert
+SELECT * FROM EMPLOYEES;
+
+
+QUESTION 2: Insert department records into the DEPARTMENTS table
+sql
+INSERT INTO DEPARTMENTS (department_id, department_name, manager_id, location_id) VALUES
+(10, 'Administration', 200, 1700),
+(20, 'Marketing', 201, 1800),
+(30, 'Purchasing', 114, 1700);
+
+-- Verify the insert
+SELECT * FROM DEPARTMENTS;
+
+
+QUESTION 3: Insert a new job record ensuring duplicate JOB_ID is not allowed
+sql
+INSERT INTO JOBS (Job_Id, Job_title, min_salary, max_salary)
+SELECT 500, 'Data Analyst', 4000, 9000
+WHERE NOT EXISTS (SELECT 1 FROM JOBS WHERE Job_Id = 500);
+
+-- Alternative approach using INSERT IGNORE
+INSERT IGNORE INTO JOBS (Job_Id, Job_title, min_salary, max_salary)
+VALUES (500, 'Data Analyst', 4000, 9000);
+
+-- Verify the insert
+SELECT * FROM JOBS;
+
+QUESTION 4: Increment salary of each employee by 10%
+sql
+UPDATE EMPLOYEES SET salary = salary * 1.10;
+
+-- Verify the update
+SELECT employee_id, first_name, last_name, salary FROM EMPLOYEES;
+
+
+QUESTION 5: Set EMAIL to 'not available' for employees with department_id 80 and commission less than 0.20
+sql
+UPDATE EMPLOYEES 
+SET email = 'not available' 
+WHERE department_id = 80 AND commission < 0.20;
+
+-- Verify the update
+SELECT employee_id, first_name, last_name, email, department_id, commission 
+FROM EMPLOYEES 
+WHERE department_id = 80;
+
+
+QUESTION 6: Set EMAIL to 'not available' for employees in the 'Purchasing' department
+sql
+UPDATE EMPLOYEES 
+SET email = 'not available' 
+WHERE department_id = (SELECT department_id FROM DEPARTMENTS WHERE department_name = 'Purchasing');
+
+-- Verify the update
+SELECT e.employee_id, e.first_name, e.last_name, e.email, d.department_name
+FROM EMPLOYEES e
+JOIN DEPARTMENTS d ON e.department_id = d.department_id
+WHERE d.department_name = 'Purchasing';
+
+
+QUESTION 7: Update EMAIL and COMMISSION for all employees
+sql
+UPDATE EMPLOYEES 
+SET email = 'not available', commission = 0.10;
+
+-- Verify the update
+SELECT employee_id, first_name, last_name, email, commission FROM EMPLOYEES;
+
+
+QUESTION 8: Increase salary by 2000 for employees in department_id = 60
+sql
+UPDATE EMPLOYEES 
+SET salary = salary + 2000 
+WHERE department_id = 60;
+
+-- Verify the update
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM EMPLOYEES 
+WHERE department_id = 60;
+
+
+QUESTION 9: Delete employees whose salary is less than 5000
+sql
+DELETE FROM EMPLOYEES WHERE salary < 5000;
+
+-- Verify the deletion
+SELECT * FROM EMPLOYEES WHERE salary < 5000;
+-- This should return empty set
+
+
+QUESTION 10: Insert a new employee record with your own suitable details
+sql
+-- First, ensure the manager-department combination exists
+INSERT INTO department_managers (department_id, manager_id, manager_name) 
+VALUES (50, 200, 'Steven King')
+ON DUPLICATE KEY UPDATE manager_name = VALUES(manager_name);
+
+-- Then insert the new employee
+INSERT INTO EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission, manager_id, department_id)
+VALUES (110, 'SAHIL', 'BARGE', 'sahil.barge@email.com', '8767941593', CURDATE(), 100, 55000.00, 0.05, 200, 50);
+
+-- Verify the insert
+SELECT * FROM EMPLOYEES WHERE employee_id = 110;
+
+
+QUESTION 11: Change manager_id to 300 for all employees in department_id = 80
+sql
+-- First, add the new manager-department combination
+INSERT INTO department_managers (department_id, manager_id, manager_name) 
+VALUES (80, 300, 'Robert Johnson')  -- Replace with actual manager name
+ON DUPLICATE KEY UPDATE manager_name = VALUES(manager_name);
+
+-- Then update the employees
+UPDATE EMPLOYEES
+SET MANAGER_ID = 300
+WHERE DEPARTMENT_ID = 80;
+
+-- Verify the update
+SELECT employee_id, first_name, last_name, manager_id, department_id 
+FROM EMPLOYEES 
+WHERE department_id = 80;
+
+QUESTION 12: Delete department record where department_id = 20
+sql
+-- Attempt to delete department 20
+DELETE FROM DEPARTMENTS WHERE department_id = 20;
+
+-- This will fail with an error if employees exist in department 20
